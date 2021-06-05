@@ -71,6 +71,9 @@ SUPERJOB_SECRET_KEY=Ваш Secret_key
 ```python
 python main.py
 ```
+Пример ответа:  
+
+<a href="https://ibb.co/WcFFbQr"><img src="https://i.ibb.co/Cnvvkqj/image.png" alt="image" border="0"></a>
 
 ### Цель проекта
 
