@@ -52,7 +52,11 @@ def get_language_statistics_for_hh(hh_url, programming_languages):
     for language in programming_languages:
         vacancies = get_hh_vacancies(hh_url, language)
         vacancies_found = len(vacancies)
-        projected_salaries = [get_predict_rub_salary_for_hh(vacancy) for vacancy in vacancies if get_predict_rub_salary_for_hh(vacancy)]
+        projected_salaries = []
+        for vacancy in vacancies:
+            projected_salary = get_predict_rub_salary_for_hh(vacancy)
+            if projected_salary:
+                projected_salaries.append(projected_salary)
         vacancies_processed = len(projected_salaries)
         average_salary = int(sum(projected_salaries) / vacancies_processed)
         vacancy_statistic[language] = {
@@ -95,12 +99,16 @@ def get_predict_rub_salary_for_sj(vacancy):
     return get_predict_salary(salary_from, salary_to)
 
 
-def get_language_statistics_for_sj(sj_url, programming_languages):
+def get_language_statistics_for_sj(sj_url, programming_languages, sj_secret_key):
     vacancy_statistic = {}
     for language in programming_languages:
-        vacancies = get_sj_vacancies(sj_url, language)
+        vacancies = get_sj_vacancies(sj_url, language, sj_secret_key)
         vacancies_found = len(vacancies)
-        projected_salaries = [get_predict_rub_salary_for_sj(vacancy) for vacancy in vacancies if get_predict_rub_salary_for_sj(vacancy)]
+        projected_salaries = []
+        for vacancy in vacancies:
+            projected_salary = get_predict_rub_salary_for_sj(vacancy)
+            if projected_salary:
+                projected_salaries.append(projected_salary)
         vacancies_processed = len(projected_salaries)
         average_salary = int(sum(projected_salaries) / vacancies_processed)
         vacancy_statistic[language] = {
@@ -147,7 +155,7 @@ if __name__ == '__main__':
     ]
 
     vacancy_statistic_for_hh = get_language_statistics_for_hh(hh_url, programming_languages)
-    vacancy_statistic_for_sj = get_language_statistics_for_sj(sj_url, programming_languages)
+    vacancy_statistic_for_sj = get_language_statistics_for_sj(sj_url, programming_languages, sj_secret_key)
 
     hh_table = get_table_instance(vacancy_statistic_for_hh, 'HeadHunter Москва')
     superjob_table = get_table_instance(vacancy_statistic_for_sj, 'Superjob Москва')
