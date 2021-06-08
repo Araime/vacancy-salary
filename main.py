@@ -54,7 +54,10 @@ def get_language_statistics_for_hh(hh_url, programming_languages):
             if projected_salary:
                 projected_salaries.append(projected_salary)
         vacancies_processed = len(projected_salaries)
-        average_salary = int(sum(projected_salaries) / vacancies_processed)
+        try:
+            average_salary = int(sum(projected_salaries) / vacancies_processed)
+        except ZeroDivisionError:
+            average_salary = 0
         vacancy_statistics[language] = {
             'vacancies_found': vacancies_found,
             'vacancies_processed': vacancies_processed,
@@ -106,7 +109,10 @@ def get_language_statistics_for_sj(sj_url, programming_languages, sj_secret_key)
             if projected_salary:
                 projected_salaries.append(projected_salary)
         vacancies_processed = len(projected_salaries)
-        average_salary = int(sum(projected_salaries) / vacancies_processed)
+        try:
+            average_salary = int(sum(projected_salaries) / vacancies_processed)
+        except ZeroDivisionError:
+            average_salary = 0
         vacancy_statistics[language] = {
             'vacancies_found': vacancies_found,
             'vacancies_processed': vacancies_processed,
