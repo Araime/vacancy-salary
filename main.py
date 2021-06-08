@@ -17,7 +17,7 @@ def get_hh_vacancies(hh_url, language):
     vacancies = []
     payload = {
         'text': language,
-        'area': '1',
+        'area': moscow_code_for_hh,
         'period': '30',
         'currency': 'RUR',
         'only_with_salary': 'true'
@@ -67,8 +67,8 @@ def get_sj_vacancies(sj_url, language, sj_secret_key):
     vacancies = []
     payload = {
         'keywords[keys][]': language,
-        'town': 4,
-        'catalogues[]': 48,
+        'town': moscow_code_for_sj,
+        'catalogues[]': development_and_programming,
         'no_agreement': 1
     }
     headers = {
@@ -135,9 +135,13 @@ def get_table_instance(statistics, title):
 if __name__ == '__main__':
     load_dotenv()
 
-    sj_secret_key = os.getenv('SUPERJOB_SECRET_KEY')
     hh_url = 'https://api.hh.ru/vacancies'
+    moscow_code_for_hh = 1
+
+    sj_secret_key = os.getenv('SUPERJOB_SECRET_KEY')
     sj_url = 'https://api.superjob.ru/2.33/vacancies/'
+    moscow_code_for_sj = 4
+    development_and_programming = 48
 
     programming_languages = [
         'JavaScript',
