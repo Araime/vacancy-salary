@@ -2,6 +2,7 @@ import os
 import requests
 from terminaltables import DoubleTable
 from dotenv import load_dotenv
+from pprint import pprint
 
 
 def get_predict_salary(salary_from, salary_to):
@@ -66,7 +67,6 @@ def get_language_statistics_for_hh(hh_url, programming_languages):
 def get_sj_vacancies(sj_url, language):
     vacancy_sheet = []
     payload = {
-        'keywords[srws][]': 1,
         'keywords[keys][]': language,
         'town': 4,
         'catalogues[]': 48,
@@ -78,6 +78,7 @@ def get_sj_vacancies(sj_url, language):
     page = 0
     more = True
     while more:
+        payload['page'] = page
         response = requests.get(sj_url, headers=headers, params=payload)
         response.raise_for_status()
         page_data = response.json()
@@ -111,7 +112,7 @@ def get_language_statistics_for_sj(sj_url, programming_languages):
     return vacancy_statistic
 
 
-def show_table(statistics, title):
+def get_table_instance(statistics, title):
     table = []
     table.append([
         'Язык программирования',
@@ -125,7 +126,7 @@ def show_table(statistics, title):
         row.extend(list(vacancy_statistic.values()))
         table.append(row)
     table_instance = DoubleTable(table, title)
-    print(table_instance.table)
+    return table_instance.table
 
 
 if __name__ == '__main__':
@@ -137,17 +138,19 @@ if __name__ == '__main__':
 
     programming_languages = [
         'JavaScript',
-        'Java',
-        'Python',
-        'Ruby',
-        'PHP',
-        'C++',
-        'C#',
-        'Go'
+        # 'Java',
+        # 'Python',
+        # 'Ruby',
+        # 'PHP',
+        # 'C++',
+        # 'C#',
+        # 'Go'
     ]
 
-    vacancy_statistic_for_hh = get_language_statistics_for_hh(hh_url, programming_languages)
+    # vacancy_statistic_for_hh = get_language_statistics_for_hh(hh_url, programming_languages)
     vacancy_statistic_for_sj = get_language_statistics_for_sj(sj_url, programming_languages)
 
-    show_table(vacancy_statistic_for_hh, 'HeadHunter Москва')
-    show_table(vacancy_statistic_for_sj, 'Superjob Москва')
+    # hh_table = get_table_instance(vacancy_statistic_for_hh, 'HeadHunter Москва')
+    superjob_table = get_table_instance(vacancy_statistic_for_sj, 'Superjob Москва')
+    # print(hh_table)
+    print(superjob_table)
