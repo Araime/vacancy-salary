@@ -4,7 +4,7 @@ from terminaltables import DoubleTable
 from dotenv import load_dotenv
 
 
-def get_predict_salary(salary_from, salary_to):
+def predict_salary(salary_from, salary_to):
     if salary_from and salary_to:
         return (salary_from + salary_to) / 2
     elif salary_from:
@@ -35,12 +35,12 @@ def get_hh_vacancies(hh_url, language):
     return vacancy_sheet
 
 
-def get_predict_rub_salary_for_hh(vacancy):
+def predict_rub_salary_for_hh(vacancy):
     if not vacancy['salary']['currency'] == 'RUR':
         return None
     salary_from = vacancy['salary']['from']
     salary_to = vacancy['salary']['to']
-    return get_predict_salary(salary_from, salary_to)
+    return predict_salary(salary_from, salary_to)
 
 
 def get_language_statistics_for_hh(hh_url, programming_languages):
@@ -50,7 +50,7 @@ def get_language_statistics_for_hh(hh_url, programming_languages):
         vacancies_found = len(vacancies)
         projected_salaries = []
         for vacancy in vacancies:
-            projected_salary = get_predict_rub_salary_for_hh(vacancy)
+            projected_salary = predict_rub_salary_for_hh(vacancy)
             if projected_salary:
                 projected_salaries.append(projected_salary)
         vacancies_processed = len(projected_salaries)
@@ -87,12 +87,12 @@ def get_sj_vacancies(sj_url, language, sj_secret_key):
     return vacancy_sheet
 
 
-def get_predict_rub_salary_for_sj(vacancy):
+def predict_rub_salary_for_sj(vacancy):
     if not vacancy['currency'] == 'rub':
         return None
     salary_from = vacancy['payment_from']
     salary_to = vacancy['payment_to']
-    return get_predict_salary(salary_from, salary_to)
+    return predict_salary(salary_from, salary_to)
 
 
 def get_language_statistics_for_sj(sj_url, programming_languages, sj_secret_key):
@@ -102,7 +102,7 @@ def get_language_statistics_for_sj(sj_url, programming_languages, sj_secret_key)
         vacancies_found = len(vacancies)
         projected_salaries = []
         for vacancy in vacancies:
-            projected_salary = get_predict_rub_salary_for_sj(vacancy)
+            projected_salary = predict_rub_salary_for_sj(vacancy)
             if projected_salary:
                 projected_salaries.append(projected_salary)
         vacancies_processed = len(projected_salaries)
