@@ -14,7 +14,7 @@ def predict_salary(salary_from, salary_to):
 
 
 def get_hh_vacancies(hh_url, language):
-    vacancy_sheet = []
+    vacancies = []
     payload = {
         'text': language,
         'area': '1',
@@ -29,10 +29,10 @@ def get_hh_vacancies(hh_url, language):
         response = requests.get(hh_url, params=payload)
         response.raise_for_status()
         page_data = response.json()
-        vacancy_sheet.extend(page_data['items'])
+        vacancies.extend(page_data['items'])
         pages_number = page_data['pages']
         page += 1
-    return vacancy_sheet
+    return vacancies
 
 
 def predict_rub_salary_for_hh(vacancy):
@@ -44,7 +44,7 @@ def predict_rub_salary_for_hh(vacancy):
 
 
 def get_language_statistics_for_hh(hh_url, programming_languages):
-    vacancy_statistic = {}
+    vacancy_statistics = {}
     for language in programming_languages:
         vacancies = get_hh_vacancies(hh_url, language)
         vacancies_found = len(vacancies)
@@ -55,16 +55,16 @@ def get_language_statistics_for_hh(hh_url, programming_languages):
                 projected_salaries.append(projected_salary)
         vacancies_processed = len(projected_salaries)
         average_salary = int(sum(projected_salaries) / vacancies_processed)
-        vacancy_statistic[language] = {
+        vacancy_statistics[language] = {
             'vacancies_found': vacancies_found,
             'vacancies_processed': vacancies_processed,
             'average_salary': average_salary
         }
-    return vacancy_statistic
+    return vacancy_statistics
 
 
 def get_sj_vacancies(sj_url, language, sj_secret_key):
-    vacancy_sheet = []
+    vacancies = []
     payload = {
         'keywords[keys][]': language,
         'town': 4,
@@ -81,10 +81,10 @@ def get_sj_vacancies(sj_url, language, sj_secret_key):
         response = requests.get(sj_url, headers=headers, params=payload)
         response.raise_for_status()
         page_data = response.json()
-        vacancy_sheet.extend(page_data['objects'])
+        vacancies.extend(page_data['objects'])
         more = page_data['more']
         page += 1
-    return vacancy_sheet
+    return vacancies
 
 
 def predict_rub_salary_for_sj(vacancy):
@@ -96,7 +96,7 @@ def predict_rub_salary_for_sj(vacancy):
 
 
 def get_language_statistics_for_sj(sj_url, programming_languages, sj_secret_key):
-    vacancy_statistic = {}
+    vacancy_statistics = {}
     for language in programming_languages:
         vacancies = get_sj_vacancies(sj_url, language, sj_secret_key)
         vacancies_found = len(vacancies)
@@ -107,12 +107,12 @@ def get_language_statistics_for_sj(sj_url, programming_languages, sj_secret_key)
                 projected_salaries.append(projected_salary)
         vacancies_processed = len(projected_salaries)
         average_salary = int(sum(projected_salaries) / vacancies_processed)
-        vacancy_statistic[language] = {
+        vacancy_statistics[language] = {
             'vacancies_found': vacancies_found,
             'vacancies_processed': vacancies_processed,
             'average_salary': average_salary
         }
-    return vacancy_statistic
+    return vacancy_statistics
 
 
 def get_table_instance(statistics, title):
@@ -150,10 +150,10 @@ if __name__ == '__main__':
         'Go'
     ]
 
-    vacancy_statistic_for_hh = get_language_statistics_for_hh(hh_url, programming_languages)
-    vacancy_statistic_for_sj = get_language_statistics_for_sj(sj_url, programming_languages, sj_secret_key)
+    vacancy_statistics_for_hh = get_language_statistics_for_hh(hh_url, programming_languages)
+    vacancy_statistics_for_sj = get_language_statistics_for_sj(sj_url, programming_languages, sj_secret_key)
 
-    hh_table = get_table_instance(vacancy_statistic_for_hh, 'HeadHunter Москва')
-    superjob_table = get_table_instance(vacancy_statistic_for_sj, 'Superjob Москва')
+    hh_table = get_table_instance(vacancy_statistics_for_hh, 'HeadHunter Москва')
+    superjob_table = get_table_instance(vacancy_statistics_for_sj, 'Superjob Москва')
     print(hh_table)
     print(superjob_table)
