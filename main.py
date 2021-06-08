@@ -40,10 +40,6 @@ def get_predict_rub_salary_for_hh(vacancy):
         return None
     salary_from = vacancy['salary']['from']
     salary_to = vacancy['salary']['to']
-    if not salary_from:
-        salary_from = 0
-    if not salary_to:
-        salary_to = 0
     return get_predict_salary(salary_from, salary_to)
 
 
@@ -141,7 +137,7 @@ if __name__ == '__main__':
 
     sj_secret_key = os.getenv('SUPERJOB_SECRET_KEY')
     hh_url = 'https://api.hh.ru/vacancies'
-    sj_url = f'https://api.superjob.ru/2.33/vacancies/'
+    sj_url = 'https://api.superjob.ru/2.33/vacancies/'
 
     programming_languages = [
         'JavaScript',
