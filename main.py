@@ -52,9 +52,9 @@ def get_language_statistics_for_hh(hh_url, programming_languages):
     for language in programming_languages:
         vacancies = get_hh_vacancies(hh_url, language)
         vacancies_found = len(vacancies)
-        excepted_salaries_sheet = [get_predict_rub_salary_for_hh(vacancy) for vacancy in vacancies if get_predict_rub_salary_for_hh(vacancy)]
-        vacancies_processed = len(excepted_salaries_sheet)
-        average_salary = int(sum(excepted_salaries_sheet) / vacancies_processed)
+        projected_salaries = [get_predict_rub_salary_for_hh(vacancy) for vacancy in vacancies if get_predict_rub_salary_for_hh(vacancy)]
+        vacancies_processed = len(projected_salaries)
+        average_salary = int(sum(projected_salaries) / vacancies_processed)
         vacancy_statistic[language] = {
             'vacancies_found': vacancies_found,
             'vacancies_processed': vacancies_processed,
@@ -63,7 +63,7 @@ def get_language_statistics_for_hh(hh_url, programming_languages):
     return vacancy_statistic
 
 
-def get_sj_vacancies(sj_url, language):
+def get_sj_vacancies(sj_url, language, sj_secret_key):
     vacancy_sheet = []
     payload = {
         'keywords[keys][]': language,
@@ -100,9 +100,9 @@ def get_language_statistics_for_sj(sj_url, programming_languages):
     for language in programming_languages:
         vacancies = get_sj_vacancies(sj_url, language)
         vacancies_found = len(vacancies)
-        excepted_salaries_sheet = [get_predict_rub_salary_for_sj(vacancy) for vacancy in vacancies if get_predict_rub_salary_for_sj(vacancy)]
-        vacancies_processed = len(excepted_salaries_sheet)
-        average_salary = int(sum(excepted_salaries_sheet) / vacancies_processed)
+        projected_salaries = [get_predict_rub_salary_for_sj(vacancy) for vacancy in vacancies if get_predict_rub_salary_for_sj(vacancy)]
+        vacancies_processed = len(projected_salaries)
+        average_salary = int(sum(projected_salaries) / vacancies_processed)
         vacancy_statistic[language] = {
             'vacancies_found': vacancies_found,
             'vacancies_processed': vacancies_processed,
