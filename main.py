@@ -2,7 +2,6 @@ import os
 import requests
 from terminaltables import DoubleTable
 from dotenv import load_dotenv
-from pprint import pprint
 
 
 def get_predict_salary(salary_from, salary_to):
@@ -138,19 +137,19 @@ if __name__ == '__main__':
 
     programming_languages = [
         'JavaScript',
-        # 'Java',
-        # 'Python',
-        # 'Ruby',
-        # 'PHP',
-        # 'C++',
-        # 'C#',
-        # 'Go'
+        'Java',
+        'Python',
+        'Ruby',
+        'PHP',
+        'C++',
+        'C#',
+        'Go'
     ]
 
-    # vacancy_statistic_for_hh = get_language_statistics_for_hh(hh_url, programming_languages)
+    vacancy_statistic_for_hh = get_language_statistics_for_hh(hh_url, programming_languages)
     vacancy_statistic_for_sj = get_language_statistics_for_sj(sj_url, programming_languages)
 
-    # hh_table = get_table_instance(vacancy_statistic_for_hh, 'HeadHunter Москва')
+    hh_table = get_table_instance(vacancy_statistic_for_hh, 'HeadHunter Москва')
     superjob_table = get_table_instance(vacancy_statistic_for_sj, 'Superjob Москва')
-    # print(hh_table)
+    print(hh_table)
     print(superjob_table)
