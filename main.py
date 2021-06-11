@@ -13,7 +13,7 @@ def predict_salary(salary_from, salary_to):
         return salary_to * 0.8
 
 
-def get_hh_vacancies(hh_url, language):
+def get_hh_vacancies(hh_url, language, moscow_code_for_hh):
     vacancies = []
     payload = {
         'text': language,
@@ -46,16 +46,16 @@ def predict_rub_salary_for_hh(vacancy):
 def get_language_statistics_for_hh(hh_url, programming_languages):
     vacancy_statistics = {}
     for language in programming_languages:
-        vacancies = get_hh_vacancies(hh_url, language)
+        vacancies = get_hh_vacancies(hh_url, language, moscow_code_for_hh)
         vacancies_found = len(vacancies)
-        projected_salaries = []
+        predicted_salaries = []
         for vacancy in vacancies:
-            projected_salary = predict_rub_salary_for_hh(vacancy)
-            if projected_salary:
-                projected_salaries.append(projected_salary)
-        vacancies_processed = len(projected_salaries)
+            predicted_salary = predict_rub_salary_for_hh(vacancy)
+            if predicted_salary:
+                predicted_salaries.append(predicted_salary)
+        vacancies_processed = len(predicted_salaries)
         try:
-            average_salary = int(sum(projected_salaries) / vacancies_processed)
+            average_salary = int(sum(predicted_salaries) / vacancies_processed)
         except ZeroDivisionError:
             average_salary = 0
         vacancy_statistics[language] = {
@@ -66,7 +66,7 @@ def get_language_statistics_for_hh(hh_url, programming_languages):
     return vacancy_statistics
 
 
-def get_sj_vacancies(sj_url, language, sj_secret_key):
+def get_sj_vacancies(sj_url, language, sj_secret_key, moscow_code_for_sj, development_and_programming):
     vacancies = []
     payload = {
         'keywords[keys][]': language,
@@ -101,16 +101,16 @@ def predict_rub_salary_for_sj(vacancy):
 def get_language_statistics_for_sj(sj_url, programming_languages, sj_secret_key):
     vacancy_statistics = {}
     for language in programming_languages:
-        vacancies = get_sj_vacancies(sj_url, language, sj_secret_key)
+        vacancies = get_sj_vacancies(sj_url, language, sj_secret_key, moscow_code_for_sj, development_and_programming)
         vacancies_found = len(vacancies)
-        projected_salaries = []
+        predicted_salaries = []
         for vacancy in vacancies:
-            projected_salary = predict_rub_salary_for_sj(vacancy)
-            if projected_salary:
-                projected_salaries.append(projected_salary)
-        vacancies_processed = len(projected_salaries)
+            predicted_salary = predict_rub_salary_for_sj(vacancy)
+            if predicted_salary:
+                predicted_salaries.append(predicted_salary)
+        vacancies_processed = len(predicted_salaries)
         try:
-            average_salary = int(sum(projected_salaries) / vacancies_processed)
+            average_salary = int(sum(predicted_salaries) / vacancies_processed)
         except ZeroDivisionError:
             average_salary = 0
         vacancy_statistics[language] = {
