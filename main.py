@@ -43,10 +43,10 @@ def predict_rub_salary_for_hh(vacancy):
     return predict_salary(salary_from, salary_to)
 
 
-def get_language_statistics_for_hh(hh_url, programming_languages):
+def get_language_statistics_for_hh(hh_url, programming_languages, town_code):
     vacancy_statistics = {}
     for language in programming_languages:
-        vacancies = get_hh_vacancies(hh_url, language, moscow_code_for_hh)
+        vacancies = get_hh_vacancies(hh_url, language, town_code)
         vacancies_found = len(vacancies)
         predicted_salaries = []
         for vacancy in vacancies:
@@ -98,11 +98,11 @@ def predict_rub_salary_for_sj(vacancy):
     return predict_salary(salary_from, salary_to)
 
 
-def get_language_statistics_for_sj(sj_url, programming_languages, sj_secret_key):
+def get_language_statistics_for_sj(sj_url, programming_languages, sj_secret_key, town_code, job_catalog_number):
     vacancy_statistics = {}
     for language in programming_languages:
-        vacancies = get_sj_vacancies(sj_url, language, sj_secret_key, moscow_code_for_sj,
-                                     development_and_programming_from_catalog)
+        vacancies = get_sj_vacancies(sj_url, language, sj_secret_key, town_code,
+                                     job_catalog_number)
         vacancies_found = len(vacancies)
         predicted_salaries = []
         for vacancy in vacancies:
@@ -148,7 +148,7 @@ if __name__ == '__main__':
     sj_secret_key = os.getenv('SUPERJOB_SECRET_KEY')
     sj_url = 'https://api.superjob.ru/2.33/vacancies/'
     moscow_code_for_sj = 4
-    development_and_programming_from_catalog = 48
+    development_and_programming_catalog = 48
 
     programming_languages = [
         'JavaScript',
@@ -161,8 +161,9 @@ if __name__ == '__main__':
         'Go'
     ]
 
-    vacancy_statistics_for_hh = get_language_statistics_for_hh(hh_url, programming_languages)
-    vacancy_statistics_for_sj = get_language_statistics_for_sj(sj_url, programming_languages, sj_secret_key)
+    vacancy_statistics_for_hh = get_language_statistics_for_hh(hh_url, programming_languages, moscow_code_for_hh)
+    vacancy_statistics_for_sj = get_language_statistics_for_sj(sj_url, programming_languages, sj_secret_key,
+                                                               moscow_code_for_sj, development_and_programming_catalog)
 
     hh_table = get_table_instance(vacancy_statistics_for_hh, 'HeadHunter Москва')
     superjob_table = get_table_instance(vacancy_statistics_for_sj, 'Superjob Москва')
