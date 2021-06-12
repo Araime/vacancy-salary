@@ -13,11 +13,11 @@ def predict_salary(salary_from, salary_to):
         return salary_to * 0.8
 
 
-def get_hh_vacancies(hh_url, language, town):
+def get_hh_vacancies(hh_url, language, town_code):
     vacancies = []
     payload = {
         'text': language,
-        'area': town,
+        'area': town_code,
         'period': '30',
         'currency': 'RUR',
         'only_with_salary': 'true'
@@ -66,11 +66,11 @@ def get_language_statistics_for_hh(hh_url, programming_languages):
     return vacancy_statistics
 
 
-def get_sj_vacancies(sj_url, language, sj_secret_key, town, job_catalog_number):
+def get_sj_vacancies(sj_url, language, sj_secret_key, town_code, job_catalog_number):
     vacancies = []
     payload = {
         'keywords[keys][]': language,
-        'town': town,
+        'town': town_code,
         'catalogues[]': job_catalog_number,
         'no_agreement': 1
     }
