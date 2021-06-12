@@ -66,12 +66,12 @@ def get_language_statistics_for_hh(hh_url, programming_languages):
     return vacancy_statistics
 
 
-def get_sj_vacancies(sj_url, language, sj_secret_key, moscow_code_for_sj, development_and_programming):
+def get_sj_vacancies(sj_url, language, sj_secret_key, moscow_code_for_sj, job_catalog_number):
     vacancies = []
     payload = {
         'keywords[keys][]': language,
         'town': moscow_code_for_sj,
-        'catalogues[]': development_and_programming,
+        'catalogues[]': job_catalog_number,
         'no_agreement': 1
     }
     headers = {
@@ -101,7 +101,7 @@ def predict_rub_salary_for_sj(vacancy):
 def get_language_statistics_for_sj(sj_url, programming_languages, sj_secret_key):
     vacancy_statistics = {}
     for language in programming_languages:
-        vacancies = get_sj_vacancies(sj_url, language, sj_secret_key, moscow_code_for_sj, development_and_programming)
+        vacancies = get_sj_vacancies(sj_url, language, sj_secret_key, moscow_code_for_sj, job_catalog_number)
         vacancies_found = len(vacancies)
         predicted_salaries = []
         for vacancy in vacancies:
@@ -147,7 +147,7 @@ if __name__ == '__main__':
     sj_secret_key = os.getenv('SUPERJOB_SECRET_KEY')
     sj_url = 'https://api.superjob.ru/2.33/vacancies/'
     moscow_code_for_sj = 4
-    development_and_programming = 48
+    job_catalog_number = 48
 
     programming_languages = [
         'JavaScript',
